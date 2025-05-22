@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #023047; /* Deep Blue */
+    margin: 0;
+    color: #8ECAE6; /* Light Blue */
+}
+
+/* Calculator Container */
+.calculator {
+    width: 300px;
+    background-color: #219EBC; /* Blue */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Display */
+.display {
+    background-color: #023047; /* Deep Blue */
+    color: #8ECAE6; /* Light Blue */
+    text-align: right;
+    padding: 20px;
+    font-size: 2em;
+    border-bottom: 1px solid #555;
+}
+
+/* Buttons Grid */
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    padding: 10px;
+}
+
+/* General Button Styles */
+.button {
+    padding: 20px;
+    font-size: 1.5em;
+    color: #FFFFFF; /* White for visibility */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #219EBC; /* Blue */
+    transition: background-color 0.3s ease;
+}
+/* Clear Button */
+.clear {
+    background-color: #D33; /* Red tone for clear */
+}
+
+.clear:hover {
+    background-color: #F55; /* Brighter red on hover */
+}
+
+/* Equal Button */
+.equal {
+    background-color: #023047; /* Deep Blue for uniqueness */
+}
+
+.equal:hover {
+    background-color: #8ECAE6; /* Light Blue */
+}
+
+/* Operator Buttons */
+.operator {
+    background-color: #666; /* Neutral gray for operators */
+}
+
+.operator:hover {
+    background-color: #888; /* Slightly lighter gray */
+}
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display">
+            <p id="input-display">0</p> <!-- Displays the user's input -->
+            <p id="result-display"></p> <!-- Displays the result below the input -->
+        </div>
+        <div class="buttons">
+    <!-- First row -->
+    <button class="button clear" onclick="clearDisplay()">AC</button>
+    <button class="button operator" onclick="appendOperator('/')">/</button>
+    <button class="button operator" onclick="appendOperator('*')">x</button>
+    <button class="button operator" onclick="appendOperator('-')">-</button>
+
+    <!-- Second row -->
+    <button class="button number" onclick="appendNumber('7')">7</button>
+    <button class="button number" onclick="appendNumber('8')">8</button>
+    <button class="button number" onclick="appendNumber('9')">9</button>
+    <button class="button operator" onclick="appendOperator('+')">+</button>
+
+    <!-- Third row -->
+    <button class="button number" onclick="appendNumber('4')">4</button>
+    <button class="button number" onclick="appendNumber('5')">5</button>
+    <button class="button number" onclick="appendNumber('6')">6</button>
+    <button class="button equal" onclick="calculate()">=</button>
+
+    <!-- Fourth row -->
+    <button class="button number" onclick="appendNumber('1')">1</button>
+    <button class="button number" onclick="appendNumber('2')">2</button>
+    <button class="button number" onclick="appendNumber('3')">3</button>
+    <button class="button number" onclick="appendNumber('0')" style="grid-column: span 2;">0</button>
+    <button class="button number" onclick="appendDot()">.</button>
+</div>
+    </div>
+    <script >
+        // Global variable to hold the current input
+let currentInput = '';
+let lastOperator = '';
+
+function clearDisplay() {
+    currentInput = '';
+    lastOperator = '';
+    updateDisplay('0', '');
+}
+
+function appendNumber(number) {
+    currentInput += number;
+    updateDisplay(currentInput, '');
+}
+
+function appendDot() {
+    if (!currentInput.includes('.')) {
+        currentInput += '.';
+        updateDisplay(currentInput, '');
+    }
+}
+
+function appendOperator(operator) {
+    if (currentInput !== '' && !lastOperator) {
+        currentInput += ' ' + operator + ' ';
+        lastOperator = operator;
+        updateDisplay(currentInput, '');
+    }
+}
+
+function calculate() {
+    try {
+        const result = eval(currentInput.replace('x', '*'));
+        updateDisplay(currentInput, result); // Pass input and result separately
+        currentInput = String(result);
+        lastOperator = '';
+    } catch (error) {
+        updateDisplay(currentInput, 'Error');
+    }
+}
+
+function updateDisplay(input, result) {
+    const inputOutput = document.getElementById('input-display');
+    const resultOutput = document.getElementById('result-display');
+
+    inputOutput.innerText = input; // Updates user input
+    resultOutput.innerText = result; // Updates the result below input
+}
+    </script>
+</body>
+</html>
